@@ -1,0 +1,6 @@
+{
+    "auto_reply_enabled": true,
+    "auto_reply_text": "Halo {name}, pesan Anda sudah kami terima. Mohon tunggu, admin kami akan segera merespons.\nUntuk itu mohon di perhatikan jadwal pelayanan dari hari Senin sampai Jumat di buka dari jam 08.00 pagi - 17.00 sore \nuntuk hari Sabtu dari jam 09.00 pagi - 14.00 siang \nuntuk hari Minggu libur.\nTerima kasih.",
+    "auto_reply_cooldown_seconds": 0,
+    "auto_reply_ignore_numbers": ""
+}
