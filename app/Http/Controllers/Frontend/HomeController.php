@@ -18,8 +18,7 @@ class HomeController extends Controller
 {
     public function __invoke()
     {
-        $todayStart = now()->startOfDay();
-        $todayEnd = now()->endOfDay();
+        $freshCutoff = now()->subDays(3);
         $resolveMediaUrl = static function (?string $rawPath): ?string {
             $path = trim((string) $rawPath);
             if ($path === '') {
@@ -77,7 +76,7 @@ class HomeController extends Controller
         $homePageSetting = PageSetting::resolve(PageSetting::PAGE_HOME);
         $latestPosts = Post::published()->latest('published_at')->take(5)->get();
         $freshPosts = Post::published()
-            ->whereBetween('created_at', [$todayStart, $todayEnd])
+            ->where('created_at', '>=', $freshCutoff)
             ->latest('created_at')
             ->take(9)
             ->get()
@@ -199,13 +198,13 @@ class HomeController extends Controller
             ->take(3)
             ->values();
         $freshEvents = Event::published()
-            ->whereBetween('created_at', [$todayStart, $todayEnd])
+            ->where('created_at', '>=', $freshCutoff)
             ->latest('created_at')
             ->take(9)
             ->get()
             ->map($mapFreshEvent);
         $freshGalleries = Gallery::query()
-            ->whereBetween('created_at', [$todayStart, $todayEnd])
+            ->where('created_at', '>=', $freshCutoff)
             ->latest('created_at')
             ->take(9)
             ->get()
