@@ -26,13 +26,24 @@ class DatabaseSeeder extends Seeder
 
         VillageProfile::factory()->create();
 
-        User::updateOrCreate(
-            ['email' => 'admin@desa.test'],
-            [
-                'name' => 'Admin Desa',
-                'password' => Hash::make('password'),
-            ]
-        );
+        // User::updateOrCreate(
+        //     ['email' => 'admin@desa.test'],
+        //     [
+        //         'name' => 'Admin Desa',
+        //         'password' => Hash::make('password'),
+        //     ]
+        // );
+
+        $super_admin = User::where('email','superadmin@local.com')->first();
+
+        if(empty($super_admin)){
+            User::create([
+                'name' => 'Super Admin',
+                'email' => 'superadmin@local.com',
+                'password' => Hash::make('12345678'),
+                'role' => 'super_admin',
+            ]);
+        }
 
         PopulationInfographic::updateOrCreate(
             ['title' => 'Infografis Penduduk'],
