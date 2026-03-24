@@ -41,7 +41,6 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Super Admin',
                 'email' => 'superadmin@local.com',
                 'password' => Hash::make('12345678'),
-                'role' => 'super_admin',
             ]);
         }
 
