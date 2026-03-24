@@ -21,8 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        // Vercel sometimes truncates long stack traces. Emit a short error summary
-        // so the root cause (e.g. SQLSTATE, missing table, bad env) is visible.
+        // Emit a short error summary so the root cause is easier to find in logs.
         $exceptions->report(function (\Throwable $e): void {
             $summary = sprintf(
                 '[ExceptionSummary] %s: %s',

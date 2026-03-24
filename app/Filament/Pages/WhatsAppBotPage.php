@@ -257,14 +257,6 @@ class WhatsAppBotPage extends Page
     private function syncGatewayRuntimeSettingsFile(): void
     {
         $runtimePath = base_path('tools/whatsapp-gateway/runtime-settings.json');
-        $runtimeDirectory = dirname($runtimePath);
-
-        // Vercel serverless filesystem is read-only outside /tmp.
-        // Settings are already persisted in database, so file sync is best-effort only.
-        if (! is_dir($runtimeDirectory) || ! is_writable($runtimeDirectory)) {
-            return;
-        }
-
         $payload = [
             'auto_reply_enabled' => $this->chatAutoReplyEnabled,
             'auto_reply_text' => trim($this->chatAutoReplyTemplate),
@@ -272,13 +264,9 @@ class WhatsAppBotPage extends Page
             'auto_reply_ignore_numbers' => trim($this->chatAutoReplyIgnoreNumbers),
         ];
 
-        try {
-            File::put(
-                $runtimePath,
-                json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
-            );
-        } catch (Throwable) {
-            // Ignore file sync failure on read-only hosts.
-        }
+        File::put(
+            $runtimePath,
+            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        );
     }
 }
