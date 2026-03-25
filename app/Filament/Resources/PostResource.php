@@ -32,7 +32,7 @@ class PostResource extends Resource
             Forms\Components\TextInput::make('category')->label('Kategori')->maxLength(100),
             Forms\Components\Textarea::make('excerpt')->label('Ringkasan')->rows(3),
             Forms\Components\RichEditor::make('content')->label('Konten')->required()->columnSpanFull(),
-            Forms\Components\FileUpload::make('thumbnail')->label('Gambar Utama')->image()->disk(config('filesystems.default'))->directory('posts'),
+            Forms\Components\FileUpload::make('thumbnail')->label('Gambar Utama')->image()->disk(config('filesystems.default'))->directory('posts')->visibility('public'),
             Forms\Components\DateTimePicker::make('published_at')->label('Tanggal Publikasi'),
             Forms\Components\Select::make('status')
                 ->label('Status')
