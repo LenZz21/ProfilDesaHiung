@@ -71,7 +71,7 @@ class PageHeaderSettingsWidget extends Widget implements HasForms
                 Forms\Components\FileUpload::make('hero_image')
                     ->label('Gambar Utama')
                     ->image()
-                    ->disk('public')
+                    ->disk(config('filesystems.default'))
                     ->directory('page-settings')
                     ->visibility('public')
                     ->imageEditor()

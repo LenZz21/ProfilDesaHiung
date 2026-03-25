@@ -47,19 +47,19 @@ class VillageProfileResource extends Resource
                     Forms\Components\FileUpload::make('home_background_image_1')
                         ->label('Gambar Beranda 1')
                         ->image()
-                        ->disk('public')
+                        ->disk(config('filesystems.default'))
                         ->directory('home-backgrounds')
                         ->visibility('public'),
                     Forms\Components\FileUpload::make('home_background_image_2')
                         ->label('Gambar Beranda 2')
                         ->image()
-                        ->disk('public')
+                        ->disk(config('filesystems.default'))
                         ->directory('home-backgrounds')
                         ->visibility('public'),
                     Forms\Components\FileUpload::make('home_background_image_3')
                         ->label('Gambar Beranda 3')
                         ->image()
-                        ->disk('public')
+                        ->disk(config('filesystems.default'))
                         ->directory('home-backgrounds')
                         ->visibility('public'),
                 ])

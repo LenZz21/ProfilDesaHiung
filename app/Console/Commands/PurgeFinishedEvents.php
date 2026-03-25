@@ -52,7 +52,7 @@ class PurgeFinishedEvents extends Command
             ->chunkById(100, function ($events) use (&$deletedCount) {
                 foreach ($events as $event) {
                     if (filled($event->banner)) {
-                        Storage::disk('public')->delete($event->banner);
+                        Storage::disk(config('filesystems.default'))->delete($event->banner);
                     }
 
                     $event->delete();

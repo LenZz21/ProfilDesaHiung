@@ -50,7 +50,7 @@ class PageSettingResource extends Resource
             Forms\Components\FileUpload::make('hero_image')
                 ->label('Gambar Hero')
                 ->image()
-                ->disk('public')
+                ->disk(config('filesystems.default'))
                 ->directory('page-settings')
                 ->visibility('public')
                 ->imageEditor()

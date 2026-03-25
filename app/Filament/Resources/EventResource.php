@@ -33,7 +33,7 @@ class EventResource extends Resource
             Forms\Components\DateTimePicker::make('start_at')->label('Waktu Mulai')->required(),
             Forms\Components\DateTimePicker::make('end_at')->label('Waktu Selesai'),
             Forms\Components\TextInput::make('location')->label('Lokasi')->maxLength(255),
-            Forms\Components\FileUpload::make('banner')->label('Banner')->image()->disk('public')->directory('events'),
+            Forms\Components\FileUpload::make('banner')->label('Banner')->image()->disk(config('filesystems.default'))->directory('events'),
             Forms\Components\Select::make('status')
                 ->label('Status')
                 ->options([
@@ -49,7 +49,7 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('banner')->label('Banner')->disk('public'),
+                Tables\Columns\ImageColumn::make('banner')->label('Banner')->disk(config('filesystems.default')),
                 Tables\Columns\TextColumn::make('title')->label('Judul')->searchable()->limit(40),
                 Tables\Columns\TextColumn::make('start_at')->label('Waktu Mulai')->dateTime('d M Y H:i')->sortable(),
                 Tables\Columns\TextColumn::make('location')->label('Lokasi')->searchable(),

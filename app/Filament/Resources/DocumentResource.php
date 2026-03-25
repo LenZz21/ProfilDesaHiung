@@ -30,7 +30,7 @@ class DocumentResource extends Resource
             Forms\Components\TextInput::make('title')->label('Judul')->required()->maxLength(255),
             Forms\Components\TextInput::make('slug')->label('Slug')->maxLength(255),
             Forms\Components\TextInput::make('category')->label('Kategori')->maxLength(255),
-            Forms\Components\FileUpload::make('file')->label('Berkas')->disk('public')->directory('documents')->required(),
+            Forms\Components\FileUpload::make('file')->label('Berkas')->disk(config('filesystems.default'))->directory('documents')->required(),
             Forms\Components\Textarea::make('description')->label('Deskripsi')->rows(4),
             Forms\Components\DateTimePicker::make('published_at')->label('Tanggal Publikasi'),
             Forms\Components\Select::make('status')

@@ -34,6 +34,6 @@ class DocumentController extends Controller
     {
         abort_unless($document->status === 'published', 404);
 
-        return Storage::disk('public')->download($document->file, $document->slug . '.' . pathinfo($document->file, PATHINFO_EXTENSION));
+        return Storage::disk(config('filesystems.default'))->download($document->file, $document->slug . '.' . pathinfo($document->file, PATHINFO_EXTENSION));
     }
 }

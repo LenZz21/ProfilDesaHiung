@@ -32,7 +32,7 @@ class PostResource extends Resource
             Forms\Components\TextInput::make('category')->label('Kategori')->maxLength(100),
             Forms\Components\Textarea::make('excerpt')->label('Ringkasan')->rows(3),
             Forms\Components\RichEditor::make('content')->label('Konten')->required()->columnSpanFull(),
-            Forms\Components\FileUpload::make('thumbnail')->label('Gambar Utama')->image()->disk('public')->directory('posts'),
+            Forms\Components\FileUpload::make('thumbnail')->label('Gambar Utama')->image()->disk(config('filesystems.default'))->directory('posts'),
             Forms\Components\DateTimePicker::make('published_at')->label('Tanggal Publikasi'),
             Forms\Components\Select::make('status')
                 ->label('Status')
@@ -49,7 +49,7 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('thumbnail')->label('Gambar')->disk('public'),
+                Tables\Columns\ImageColumn::make('thumbnail')->label('Gambar')->disk(config('filesystems.default')),
                 Tables\Columns\TextColumn::make('title')->label('Judul')->searchable()->limit(40),
                 Tables\Columns\TextColumn::make('category')->label('Kategori')->badge(),
                 Tables\Columns\BadgeColumn::make('status')

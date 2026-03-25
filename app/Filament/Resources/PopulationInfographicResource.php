@@ -53,7 +53,7 @@ class PopulationInfographicResource extends Resource
                     Forms\Components\FileUpload::make('hero_image')
                         ->label('Gambar Utama')
                         ->image()
-                        ->disk('public')
+                        ->disk(config('filesystems.default'))
                         ->directory('infographics')
                         ->visibility('public')
                         ->imageEditor()

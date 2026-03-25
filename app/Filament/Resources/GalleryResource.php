@@ -29,7 +29,7 @@ class GalleryResource extends Resource
         return $form->schema([
             Forms\Components\TextInput::make('title')->label('Judul Album')->required()->maxLength(255),
             Forms\Components\TextInput::make('slug')->label('Slug')->maxLength(255),
-            Forms\Components\FileUpload::make('cover')->label('Foto Sampul')->image()->disk('public')->directory('galleries'),
+            Forms\Components\FileUpload::make('cover')->label('Foto Sampul')->image()->disk(config('filesystems.default'))->directory('galleries'),
             Forms\Components\Textarea::make('description')->label('Deskripsi')->rows(4),
             Forms\Components\Repeater::make('items')
                 ->label('Foto Album')
@@ -37,7 +37,7 @@ class GalleryResource extends Resource
                     Forms\Components\FileUpload::make('image')
                         ->label('Foto')
                         ->image()
-                        ->disk('public')
+                        ->disk(config('filesystems.default'))
                         ->directory('gallery-items')
                         ->required(),
                     Forms\Components\TextInput::make('caption')
@@ -61,7 +61,7 @@ class GalleryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('cover')->label('Sampul')->disk('public'),
+                Tables\Columns\ImageColumn::make('cover')->label('Sampul')->disk(config('filesystems.default')),
                 Tables\Columns\TextColumn::make('title')->label('Judul Album')->searchable(),
                 Tables\Columns\TextColumn::make('slug')->label('Slug')->searchable(),
                 Tables\Columns\TextColumn::make('items_count')->label('Jumlah Foto'),
