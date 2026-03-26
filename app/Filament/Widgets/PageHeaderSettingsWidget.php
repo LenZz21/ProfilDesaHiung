@@ -74,6 +74,7 @@ class PageHeaderSettingsWidget extends Widget implements HasForms
                     ->disk(config('filesystems.default'))
                     ->directory('page-settings')
                     ->visibility('public')
+                    ->fetchFileInformation(false)
                     ->imageEditor()
                     ->maxSize(4096)
                     ->helperText('Pilih gambar dari perangkat Anda. Maksimal 4MB.'),

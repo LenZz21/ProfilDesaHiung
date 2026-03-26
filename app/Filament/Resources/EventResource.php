@@ -33,7 +33,7 @@ class EventResource extends Resource
             Forms\Components\DateTimePicker::make('start_at')->label('Waktu Mulai')->required(),
             Forms\Components\DateTimePicker::make('end_at')->label('Waktu Selesai'),
             Forms\Components\TextInput::make('location')->label('Lokasi')->maxLength(255),
-            Forms\Components\FileUpload::make('banner')->label('Banner')->image()->disk(config('filesystems.default'))->directory('events')->visibility('public'),
+            Forms\Components\FileUpload::make('banner')->label('Banner')->image()->disk(config('filesystems.default'))->directory('events')->visibility('public')->fetchFileInformation(false),
             Forms\Components\Select::make('status')
                 ->label('Status')
                 ->options([

@@ -49,19 +49,22 @@ class VillageProfileResource extends Resource
                         ->image()
                         ->disk(config('filesystems.default'))
                         ->directory('home-backgrounds')
-                        ->visibility('public'),
+                        ->visibility('public')
+                        ->fetchFileInformation(false),
                     Forms\Components\FileUpload::make('home_background_image_2')
                         ->label('Gambar Beranda 2')
                         ->image()
                         ->disk(config('filesystems.default'))
                         ->directory('home-backgrounds')
-                        ->visibility('public'),
+                        ->visibility('public')
+                        ->fetchFileInformation(false),
                     Forms\Components\FileUpload::make('home_background_image_3')
                         ->label('Gambar Beranda 3')
                         ->image()
                         ->disk(config('filesystems.default'))
                         ->directory('home-backgrounds')
-                        ->visibility('public'),
+                        ->visibility('public')
+                        ->fetchFileInformation(false),
                 ])
                 ->columns(3),
             Forms\Components\TextInput::make('whatsapp')->label('Nomor WhatsApp')->maxLength(30),

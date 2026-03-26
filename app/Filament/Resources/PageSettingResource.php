@@ -53,6 +53,7 @@ class PageSettingResource extends Resource
                 ->disk(config('filesystems.default'))
                 ->directory('page-settings')
                 ->visibility('public')
+                ->fetchFileInformation(false)
                 ->imageEditor()
                 ->maxSize(4096)
                 ->helperText('Opsional. Jika dikosongkan, halaman memakai gambar default.'),

@@ -162,7 +162,8 @@ class LetterSubmissionResource extends Resource
                                 'image/png',
                             ])
                             ->maxSize(10240)
-                    ->helperText('Maksimal 10MB. Format: PDF, DOC, DOCX, JPG, PNG.'),
+                            ->fetchFileInformation(false)
+                            ->helperText('Maksimal 10MB. Format: PDF, DOC, DOCX, JPG, PNG.'),
                     ])
                     ->visible(fn (LetterSubmission $record): bool => in_array($record->status, [
                         LetterSubmission::STATUS_DITERIMA,

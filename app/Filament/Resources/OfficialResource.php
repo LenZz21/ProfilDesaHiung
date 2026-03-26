@@ -44,7 +44,7 @@ class OfficialResource extends Resource
                 ->label('Judul Struktur (Halaman Publik)')
                 ->helperText('Opsional. Jika diisi, judul bagian pada halaman profil akan memakai nilai ini.')
                 ->maxLength(255),
-            Forms\Components\FileUpload::make('photo')->label('Foto')->image()->disk(config('filesystems.default'))->directory('officials')->visibility('public'),
+            Forms\Components\FileUpload::make('photo')->label('Foto')->image()->disk(config('filesystems.default'))->directory('officials')->visibility('public')->fetchFileInformation(false),
             Forms\Components\TextInput::make('phone')->label('Nomor Telepon')->maxLength(30),
             Forms\Components\TextInput::make('instagram_url')
                 ->label('Link Instagram')

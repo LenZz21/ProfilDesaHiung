@@ -56,6 +56,7 @@ class PopulationInfographicResource extends Resource
                         ->disk(config('filesystems.default'))
                         ->directory('infographics')
                         ->visibility('public')
+                        ->fetchFileInformation(false)
                         ->imageEditor()
                         ->maxSize(4096)
                         ->helperText('Pilih gambar dari perangkat Anda. Maksimal 4MB.'),

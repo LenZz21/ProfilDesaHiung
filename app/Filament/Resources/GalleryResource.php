@@ -29,7 +29,7 @@ class GalleryResource extends Resource
         return $form->schema([
             Forms\Components\TextInput::make('title')->label('Judul Album')->required()->maxLength(255),
             Forms\Components\TextInput::make('slug')->label('Slug')->maxLength(255),
-            Forms\Components\FileUpload::make('cover')->label('Foto Sampul')->image()->disk(config('filesystems.default'))->directory('galleries')->visibility('public'),
+            Forms\Components\FileUpload::make('cover')->label('Foto Sampul')->image()->disk(config('filesystems.default'))->directory('galleries')->visibility('public')->fetchFileInformation(false),
             Forms\Components\Textarea::make('description')->label('Deskripsi')->rows(4),
             Forms\Components\Repeater::make('items')
                 ->label('Foto Album')
@@ -40,6 +40,7 @@ class GalleryResource extends Resource
                         ->disk(config('filesystems.default'))
                         ->directory('gallery-items')
                         ->visibility('public')
+                        ->fetchFileInformation(false)
                         ->required(),
                     Forms\Components\TextInput::make('caption')
                         ->label('Caption')
