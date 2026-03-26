@@ -5025,6 +5025,9 @@ SVG;
             let maxShift = 0;
             let currentShift = 0;
             let targetShift = 0;
+            let lastFrameTime = 0;
+            const smoothLerpBase = 0.11;
+            const settleThreshold = 0.08;
 
             const applyShift = (value) => {
                 rail.style.setProperty('--overview-photo-shift', `${value.toFixed(2)}px`);
@@ -5033,10 +5036,12 @@ SVG;
             const resetShift = () => {
                 currentShift = 0;
                 targetShift = 0;
+                lastFrameTime = 0;
                 applyShift(0);
             };
 
             const recalc = () => {
+                const wasDesktopMode = isDesktopMode;
                 isDesktopMode = window.matchMedia('(min-width: 1024px)').matches && !reduceMotionQuery.matches;
                 if (!isDesktopMode) {
                     maxShift = 0;
@@ -5053,27 +5058,44 @@ SVG;
 
                 maxShift = Math.max(availableShift, 0);
                 startScrollY = Math.max(sectionTop - topOffset, 0);
-                targetShift = Math.min(Math.max(window.scrollY - startScrollY, 0), maxShift);
-                currentShift = targetShift;
-                applyShift(currentShift);
-            };
+                const nextTarget = Math.min(Math.max(window.scrollY - startScrollY, 0), maxShift);
+                targetShift = nextTarget;
 
-            const animateShift = () => {
-                animationFrameId = null;
-                if (!isDesktopMode) {
+                if (!wasDesktopMode) {
+                    currentShift = nextTarget;
+                    applyShift(currentShift);
                     return;
                 }
 
-                currentShift += (targetShift - currentShift) * 0.2;
-                if (Math.abs(targetShift - currentShift) < 0.2) {
+                currentShift = Math.min(Math.max(currentShift, 0), maxShift);
+            };
+
+            const animateShift = (timestamp) => {
+                animationFrameId = null;
+                if (!isDesktopMode) {
+                    lastFrameTime = 0;
+                    return;
+                }
+
+                const frameDelta = lastFrameTime > 0
+                    ? Math.min((timestamp - lastFrameTime) / 16.67, 2.2)
+                    : 1;
+                lastFrameTime = timestamp;
+
+                const smoothLerp = 1 - Math.pow(1 - smoothLerpBase, frameDelta);
+                currentShift += (targetShift - currentShift) * smoothLerp;
+                if (Math.abs(targetShift - currentShift) < settleThreshold) {
                     currentShift = targetShift;
                 }
 
                 applyShift(currentShift);
 
-                if (Math.abs(targetShift - currentShift) >= 0.2) {
+                if (Math.abs(targetShift - currentShift) >= settleThreshold) {
                     animationFrameId = window.requestAnimationFrame(animateShift);
+                    return;
                 }
+
+                lastFrameTime = 0;
             };
 
             const requestAnimate = () => {
