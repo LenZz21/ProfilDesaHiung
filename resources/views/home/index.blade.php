@@ -4176,7 +4176,7 @@ SVG;
         </div>
 
         <div class="home-map-cta-wrap mt-8 text-center" data-home-reveal="text">
-            <a href="{{ route('services.index') }}" class="inline-flex w-full items-center justify-center rounded-full border border-blue-600 px-5 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-600 hover:text-white sm:w-auto">
+            <a href="{{ route('profile.index') }}" class="inline-flex w-full items-center justify-center rounded-full border border-blue-600 px-5 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-600 hover:text-white sm:w-auto">
                 {{ __('Lihat Selengkapnya') }}
             </a>
         </div>
