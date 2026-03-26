@@ -11,17 +11,6 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-/* Desktop non-home hero backgrounds: fit image source more accurately. */
-@media (min-width: 1024px) {
-    body.site-shell:not(.page-home) main section[style*='background-image'] {
-        background-size: contain !important;
-        background-position: center center !important;
-        background-repeat: no-repeat !important;
-        background-attachment: scroll !important;
-        background-color: #0b1220;
-    }
-}
-
 /* Desktop non-home hard overrides: ensure non-home pages follow home scale. */
 @media (min-width: 1920px) {
     body.site-shell:not(.page-home) main [class~='max-w-7xl'] {
