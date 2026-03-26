@@ -389,6 +389,10 @@ SVG;
         overflow: hidden;
     }
 
+    .home-overview-photo-rail {
+        position: relative;
+    }
+
     .home-overview-content[data-home-reveal] {
         transition: opacity 1.65s cubic-bezier(0.22, 1, 0.36, 1), transform 1.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -523,6 +527,18 @@ SVG;
         to {
             opacity: 1;
             transform: translate3d(0, 0, 0) scale(1);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .home-overview-section {
+            overflow: visible;
+        }
+
+        .home-overview-photo-rail {
+            position: sticky;
+            top: clamp(5.5rem, 7vw, 7.25rem);
+            align-self: start;
         }
     }
 
@@ -4132,7 +4148,7 @@ SVG;
             @endif
         </div>
 
-        <div class="justify-self-center lg:justify-self-start">
+        <div class="home-overview-photo-rail justify-self-center lg:justify-self-start">
             <div class="home-overview-photo-card w-full max-w-[300px] overflow-hidden rounded-2xl border border-slate-200 bg-white" data-home-reveal="card">
                 <img
                     src="{{ $featuredOfficialPhotoUrl }}"
