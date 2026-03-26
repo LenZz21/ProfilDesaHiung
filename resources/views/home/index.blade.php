@@ -391,6 +391,9 @@ SVG;
 
     .home-overview-photo-rail {
         position: relative;
+        --overview-photo-shift: 0px;
+        transform: translate3d(0, var(--overview-photo-shift), 0);
+        will-change: transform;
     }
 
     .home-overview-content[data-home-reveal] {
@@ -535,9 +538,11 @@ SVG;
             overflow: visible;
         }
 
+        .home-overview-layout {
+            align-items: start !important;
+        }
+
         .home-overview-photo-rail {
-            position: sticky;
-            top: clamp(5.5rem, 7vw, 7.25rem);
             align-self: start;
         }
     }
@@ -5005,6 +5010,128 @@ SVG;
             });
         };
 
+        const initHomeOverviewPhotoScrollFollow = () => {
+            const section = document.querySelector('.home-overview-section');
+            const rail = section?.querySelector('.home-overview-photo-rail');
+
+            if (!(section instanceof HTMLElement) || !(rail instanceof HTMLElement)) {
+                return;
+            }
+
+            let animationFrameId = null;
+            let recalcTimeoutId = null;
+            let isDesktopMode = false;
+            let startScrollY = 0;
+            let maxShift = 0;
+            let currentShift = 0;
+            let targetShift = 0;
+
+            const applyShift = (value) => {
+                rail.style.setProperty('--overview-photo-shift', `${value.toFixed(2)}px`);
+            };
+
+            const resetShift = () => {
+                currentShift = 0;
+                targetShift = 0;
+                applyShift(0);
+            };
+
+            const recalc = () => {
+                isDesktopMode = window.matchMedia('(min-width: 1024px)').matches && !reduceMotionQuery.matches;
+                if (!isDesktopMode) {
+                    maxShift = 0;
+                    resetShift();
+                    return;
+                }
+
+                const sectionRect = section.getBoundingClientRect();
+                const sectionTop = window.scrollY + sectionRect.top;
+                const sectionHeight = sectionRect.height;
+                const railHeight = rail.offsetHeight;
+                const topOffset = Math.max(88, Math.min(132, window.innerHeight * 0.14));
+                const availableShift = sectionHeight - railHeight - topOffset;
+
+                maxShift = Math.max(availableShift, 0);
+                startScrollY = Math.max(sectionTop - topOffset, 0);
+                targetShift = Math.min(Math.max(window.scrollY - startScrollY, 0), maxShift);
+                currentShift = targetShift;
+                applyShift(currentShift);
+            };
+
+            const animateShift = () => {
+                animationFrameId = null;
+                if (!isDesktopMode) {
+                    return;
+                }
+
+                currentShift += (targetShift - currentShift) * 0.2;
+                if (Math.abs(targetShift - currentShift) < 0.2) {
+                    currentShift = targetShift;
+                }
+
+                applyShift(currentShift);
+
+                if (Math.abs(targetShift - currentShift) >= 0.2) {
+                    animationFrameId = window.requestAnimationFrame(animateShift);
+                }
+            };
+
+            const requestAnimate = () => {
+                if (!isDesktopMode) {
+                    return;
+                }
+
+                targetShift = Math.min(Math.max(window.scrollY - startScrollY, 0), maxShift);
+                if (animationFrameId === null) {
+                    animationFrameId = window.requestAnimationFrame(animateShift);
+                }
+            };
+
+            const recalcSoon = () => {
+                if (recalcTimeoutId !== null) {
+                    window.clearTimeout(recalcTimeoutId);
+                }
+
+                recalcTimeoutId = window.setTimeout(() => {
+                    recalcTimeoutId = null;
+                    recalc();
+                    requestAnimate();
+                }, 32);
+            };
+
+            const accordion = section.querySelector('[data-home-overview-accordion]');
+            if (accordion instanceof HTMLElement) {
+                accordion.addEventListener('click', () => {
+                    recalcSoon();
+                    window.setTimeout(recalcSoon, 420);
+                    window.setTimeout(recalcSoon, 980);
+                });
+
+                accordion.addEventListener('transitionend', (event) => {
+                    const target = event.target;
+                    if (!(target instanceof HTMLElement)) {
+                        return;
+                    }
+
+                    if (target.matches('[data-home-overview-panel]')) {
+                        recalcSoon();
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', requestAnimate, { passive: true });
+            window.addEventListener('resize', recalcSoon, { passive: true });
+
+            if (typeof reduceMotionQuery.addEventListener === 'function') {
+                reduceMotionQuery.addEventListener('change', recalcSoon);
+            } else if (typeof reduceMotionQuery.addListener === 'function') {
+                reduceMotionQuery.addListener(recalcSoon);
+            }
+
+            recalc();
+            requestAnimate();
+        };
+
         const initHomeMapViewToggle = () => {
             const mapSurface = document.querySelector('[data-home-map-surface]');
             if (!(mapSurface instanceof HTMLElement) || mapSurface.dataset.mapInitialized === 'true') {
@@ -5867,6 +5994,7 @@ SVG;
             initHomeHeroTypography();
             initHomeFreshPopup();
             initHomeOverviewAccordion();
+            initHomeOverviewPhotoScrollFollow();
             initHomeMapViewToggle();
             initHomeOrgCarousel();
             initHomeScrollReveal();
