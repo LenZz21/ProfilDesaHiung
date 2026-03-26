@@ -5028,6 +5028,9 @@ SVG;
             let lastFrameTime = 0;
             const smoothLerpBase = 0.11;
             const settleThreshold = 0.08;
+            const accordion = section.querySelector('[data-home-overview-accordion]');
+            const isOverviewExpanded = () => accordion instanceof HTMLElement
+                && accordion.classList.contains('is-open');
 
             const applyShift = (value) => {
                 rail.style.setProperty('--overview-photo-shift', `${value.toFixed(2)}px`);
@@ -5059,10 +5062,10 @@ SVG;
                 maxShift = Math.max(availableShift, 0);
                 startScrollY = Math.max(sectionTop - topOffset, 0);
                 const nextTarget = Math.min(Math.max(window.scrollY - startScrollY, 0), maxShift);
-                targetShift = nextTarget;
+                targetShift = isOverviewExpanded() ? nextTarget : 0;
 
                 if (!wasDesktopMode) {
-                    currentShift = nextTarget;
+                    currentShift = targetShift;
                     applyShift(currentShift);
                     return;
                 }
@@ -5103,7 +5106,8 @@ SVG;
                     return;
                 }
 
-                targetShift = Math.min(Math.max(window.scrollY - startScrollY, 0), maxShift);
+                const nextTarget = Math.min(Math.max(window.scrollY - startScrollY, 0), maxShift);
+                targetShift = isOverviewExpanded() ? nextTarget : 0;
                 if (animationFrameId === null) {
                     animationFrameId = window.requestAnimationFrame(animateShift);
                 }
@@ -5121,7 +5125,6 @@ SVG;
                 }, 32);
             };
 
-            const accordion = section.querySelector('[data-home-overview-accordion]');
             if (accordion instanceof HTMLElement) {
                 accordion.addEventListener('click', () => {
                     recalcSoon();
