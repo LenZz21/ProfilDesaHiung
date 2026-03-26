@@ -67,6 +67,8 @@
 
     .documents-table-shell {
         border: 1px solid rgba(148, 163, 184, 0.3);
+        position: relative;
+        z-index: 1;
     }
 
     .documents-download-btn {
@@ -150,9 +152,25 @@
         display: none;
     }
 
+    .documents-toolbar {
+        position: relative;
+        z-index: 40;
+        isolation: isolate;
+    }
+
+    .documents-filter-form {
+        position: relative;
+        z-index: 41;
+    }
+
     .documents-filter-mobile {
         position: relative;
         min-width: 230px;
+        z-index: 42;
+    }
+
+    .documents-filter-mobile.is-open {
+        z-index: 60;
     }
 
     .documents-filter-trigger {
